@@ -403,6 +403,8 @@ extension ResponsiveTextField: UIViewRepresentable {
             // the demand is already fulfilled so we can just reset it.
             resetFirstResponderDemand()
         }
+        
+        uiView.reloadInputViews()
     }
 
     fileprivate func resetFirstResponderDemand() {

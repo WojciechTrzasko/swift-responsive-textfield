@@ -37,6 +37,9 @@ public struct ResponsiveTextField {
 
     /// Allows for the text field to be configured during creation.
     let configuration: Configuration
+    
+    /// Allows for the text field to be dynamically configured during updates.
+    let updateConfiguration: Configuration
 
     /// Controls whether or not the textfield is enabled, using the SwiftUI environment.
     /// To disable the textfield, you can use the standard SwiftUI `.disabled()`
@@ -133,6 +136,7 @@ public struct ResponsiveTextField {
         adjustsFontForContentSizeCategory: Bool = true,
         firstResponderDemand: Binding<FirstResponderDemand?>? = nil,
         configuration: Configuration = .empty,
+        updateConfiguration: Configuration = .empty,
         onFirstResponderStateChanged: FirstResponderStateChangeHandler? = nil,
         handleReturn: (() -> Void)? = nil,
         handleDelete: ((String) -> Void)? = nil,
@@ -145,6 +149,7 @@ public struct ResponsiveTextField {
         self.firstResponderDemand = firstResponderDemand
         self.isSecure = isSecure
         self.configuration = configuration
+        self.updateConfiguration = updateConfiguration
         self.adjustsFontForContentSizeCategory = adjustsFontForContentSizeCategory
         self.onFirstResponderStateChanged = onFirstResponderStateChanged
         self.handleReturn = handleReturn
@@ -368,6 +373,8 @@ extension ResponsiveTextField: UIViewRepresentable {
         uiView.text = text.wrappedValue
         uiView.textColor = textColor
         uiView.textAlignment = textAlignment
+        
+        updateConfiguration.configure(uiView)
 
         if let placeholder {
             uiView.attributedPlaceholder = NSAttributedString(
